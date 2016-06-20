@@ -6,12 +6,21 @@ using Newtonsoft.Json.Linq;
 namespace Basic.Controllers
 {
     [Produces("application/json")]
-    public class DynamicTypesController
+    public class DynamicTypesController : Controller
     {
-        [HttpPost("kittens")]
-        public int CreateKitten([FromBody]dynamic kitten)
+        public class Kitten
         {
-            return 1;
+            public string Name { get; set; }
+            public string Color { get; set; }
+        }
+
+        [HttpPost("kittens")]
+        public Kitten CreateKitten([FromBody]Kitten kitten)
+        {
+            return new Kitten {
+                Name="Steve",
+                Color="Green"
+            };
         }
 
         [HttpGet("unicorns")]

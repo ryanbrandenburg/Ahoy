@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Basic.Swagger;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.ObjectPool;
+using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.Swagger.Model;
-using Basic.Swagger;
-using Microsoft.Extensions.PlatformAbstractions;
+using System.Buffers;
 using System.IO;
+using System.Xml;
 
 namespace Basic
 {
@@ -25,6 +29,7 @@ namespace Basic
         {
             services
                 .AddMvc()
+                .AddXmlSerializerFormatters()
                 .AddJsonOptions(options =>
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -55,7 +60,7 @@ namespace Basic
                 });
             }
         }
-
+        
         // Configure is called after ConfigureServices is called.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
@@ -64,7 +69,7 @@ namespace Basic
 
             // Configure the HTTP request pipeline.
             app.UseStaticFiles();
-
+            
             // Add MVC to the request pipeline.
             app.UseDeveloperExceptionPage();
             app.UseMvc();

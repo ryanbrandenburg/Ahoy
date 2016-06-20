@@ -45,8 +45,9 @@ namespace Swashbuckle.SwaggerUi.Application
         {
             if (request.Method != "GET") return false;
 
-            var routeValues = _requestMatcher.Match(request.Path);
-            return (routeValues != null);
+            var routeValues = new RouteValueDictionary();
+            var match = _requestMatcher.TryMatch(request.Path, routeValues);
+            return match;
         }
 
         private Stream AssignPlaceholderValuesTo(Stream template)
